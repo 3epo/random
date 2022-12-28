@@ -1,0 +1,101 @@
+// ==UserScript==
+// @name         random.org Changer by ZerO
+// @version      0.1
+// @match        https://www.random.org/*
+// @description  Меняет значение на то которое вы хотите
+// @author       ZerO
+// ==/UserScript==
+
+//Первое число
+var first_number = 666;
+//Номер клика для первого числа
+var first_click_number = 3;
+//Второе число
+var second_number = 228;
+//Номер клика для второго числа
+var second_click_number = 4;
+//Третие число
+var third_number = 777;
+//Номер клика для третьего числа
+var third_click_number = 5;
+
+var click_ctr = 0;
+var html_template =  "<center><span style='font-size:100%;font-weight:bold;'>%value%<br/></span><span style='font-size:70%;'>Min:&nbsp;%min%, Max:&nbsp;%max%<br/>%date%</span></center>";
+
+function template(template_data, params)
+{
+    return template_data.replace
+    (
+        /%(\w*)%/g,
+        function(m, key)
+        {
+            return params.hasOwnProperty(key) ? params[key] : "";
+        }
+    );
+}
+
+if (typeof printNumber != "undefined")
+{
+    var origPrintNumber = printNumber;
+    printNumber = function()
+    {
+        click_ctr++;
+
+        if (click_ctr == first_click_number)
+        {
+            var date = new Date();
+            var date_str = [date.getUTCFullYear(), ("0" + (date.getUTCMonth() + 1)).slice(-2), date.getDate()].join("-") + " " + [date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()].join(":") + " " + "UTC";
+
+            document.querySelector('[id$="result"]').innerHTML = template
+            (
+                html_template,
+                {
+                    value: first_number,
+                    min: document.querySelector('[id$="min"]').value,
+                    max: document.querySelector('[id$="max"]').value,
+                    date: date_str
+                }
+            );
+
+            document.querySelector('[id$="button"]').disabled = false;
+        }
+        else if (click_ctr == second_click_number)
+        {
+            var date = new Date();
+            var date_str = [date.getUTCFullYear(), ("0" + (date.getUTCMonth() + 1)).slice(-2), date.getDate()].join("-") + " " + [date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()].join(":") + " " + "UTC";
+
+            document.querySelector('[id$="result"]').innerHTML = template
+            (
+                html_template,
+                {
+                    value: second_number,
+                    min: document.querySelector('[id$="min"]').value,
+                    max: document.querySelector('[id$="max"]').value,
+                    date: date_str
+                }
+            );
+
+            document.querySelector('[id$="button"]').disabled = false;
+        }
+        else if (click_ctr == third_click_number)
+        {
+            var date = new Date();
+            var date_str = [date.getUTCFullYear(), ("0" + (date.getUTCMonth() + 1)).slice(-2), date.getDate()].join("-") + " " + [date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()].join(":") + " " + "UTC";
+
+            document.querySelector('[id$="result"]').innerHTML = template
+            (
+                html_template,
+                {
+                    value: third_number,
+                    min: document.querySelector('[id$="min"]').value,
+                    max: document.querySelector('[id$="max"]').value,
+                    date: date_str
+                }
+            );
+
+            document.querySelector('[id$="button"]').disabled = false;
+        }
+        else
+            origPrintNumber();
+    }
+};
